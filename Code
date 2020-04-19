@@ -1,0 +1,99 @@
+from tkinter import *
+import smtplib
+import time
+
+
+root = Tk()
+
+root.title('Email Fifty')
+
+root.iconbitmap('e.ico')
+
+root.geometry('220x200')
+
+root['bg'] = '#49A'
+
+#function
+def send_email():
+    sender_email = entry_1.get()
+    rec_email = entry_3.get()
+    password = entry_2.get()
+    text = entry_4.get()
+    subject = entry_5.get()
+    message = 'Subject: {}\n\n{}'.format(subject, text)
+    counter = scale.get()
+    label_8 = Label(root, text='Success!',fg='green' )
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, password)
+    print('Login sucessful')
+
+    while counter <= 50:
+        counter -= 1
+
+        if counter == -1:
+
+            label_8.grid(row=6, column=1)
+
+
+            print('done')
+            break
+        else:
+
+            server.sendmail(sender_email, rec_email, message)
+            print('email has been send to ', rec_email, 'this many times:', counter)
+
+    print( sender_email, password,rec_email,text,subject)
+
+
+
+
+
+
+
+
+
+label_1 = Label(root, text='Sender Email:', bg = '#49A', fg ='white')
+label_2 = Label(root, text='Email Password:', bg = '#49A', fg ='white')
+label_3 = Label(root, text='Recipient Email:', bg = '#49A', fg ='white')
+label_4 = Label(root, text='Text:', bg = '#49A', fg ='white')
+label_5 = Label(root, text='Title:', bg = '#49A', fg ='white')
+label_7 = Label(root, text='Emails amount:', bg = '#49A', fg ='white')
+
+
+
+
+
+
+
+entry_1 = Entry(root)
+entry_2 = Entry(root, show='*')
+entry_3 = Entry(root)
+entry_4 = Entry(root)
+entry_5 = Entry(root)
+scale = Scale(root, from_=1, to=50, orient=HORIZONTAL , bg = '#49A')
+
+entry_1.insert(10,'sender@gmail.com')
+entry_3.insert(10,'recipient@example.com')
+
+label_1.grid(row = 0, sticky=W)
+label_2.grid(row = 1, sticky=W)
+label_3.grid(row = 2, sticky=W)
+label_4.grid(row = 3, sticky=W)
+label_5.grid(row = 4, sticky=W)
+label_7.grid(row = 5, sticky=W)
+
+
+entry_1.grid(row=0, column =1)
+entry_2.grid(row=1, column =1)
+entry_3.grid(row=2, column =1)
+entry_4.grid(row=3, column =1)
+entry_5.grid(row=4, column =1)
+scale.grid(row=5, column =1)
+
+
+Button(root,text='Send',bg='red', fg ='white',command=send_email).grid(row=6,sticky=W)
+
+
+root.mainloop()
